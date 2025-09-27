@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>?</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f8f9fa;
+        margin: 0;
+        overflow: hidden;
+        transition: background 1s ease;
+        position: relative;
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 20px;
+        border: none;
+        background-color: #ff4d6d;
+        color: white;
+        cursor: pointer;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      button:hover {
+        background-color: #ff1f4d;
+      }
+
+      /* chữ phía trên trái tim */
+      .love-text {
+        position: absolute;
+        top: 15%; /* để chữ nằm trên trái tim */
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: "Dancing Script", cursive;
+        font-size: 45px;
+        font-weight: bold;
+        color: yellow;
+        text-shadow: 0 0 10px black;
+        z-index: 10;
+        display: none;
+      }
+
+      /* trái tim */
+      .heart {
+        position: relative;
+        width: clamp(150px, 50vw, 300px);
+        height: clamp(150px, 50vw, 300px);
+        background-color: red;
+        transform: rotate(-45deg);
+        margin-top: 60px;
+        display: none;
+        animation: colorChange 1s infinite alternate;
+        box-shadow: 0 0 50px rgba(255, 0, 0, 0.6);
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: clamp(150px, 50vw, 300px);
+        height: clamp(150px, 50vw, 300px);
+        border-radius: 50%;
+        animation: colorChange 1s infinite alternate;
+      }
+
+      .heart::before {
+        top: -50%;
+        left: 0;
+      }
+
+      .heart::after {
+        top: 0;
+        left: 50%;
+      }
+
+      /* hiệu ứng đổi màu */
+      @keyframes colorChange {
+        0% {
+          background-color: #ff4d6d;
+          box-shadow: 0 0 50px rgba(255, 77, 109, 0.6);
+        }
+        25% {
+          background-color: #ff7eb3;
+          box-shadow: 0 0 50px rgba(255, 126, 179, 0.6);
+        }
+        50% {
+          background-color: #ffa6c9;
+          box-shadow: 0 0 50px rgba(255, 166, 201, 0.6);
+        }
+        75% {
+          background-color: #ffb3d9;
+          box-shadow: 0 0 50px rgba(255, 179, 217, 0.6);
+        }
+        100% {
+          background-color: #ff66a3;
+          box-shadow: 0 0 50px rgba(255, 102, 163, 0.6);
+        }
+      }
+
+      /* nền bầu trời sao */
+      .starry {
+        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      }
+
+      .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: twinkle 2s infinite alternate;
+      }
+
+      @keyframes twinkle {
+        from {
+          opacity: 0.2;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button id="startBtn">Bấm vô</button>
+    <div class="love-text" id="loveText">I Love You</div>
+    <div class="heart" id="heart"></div>
+    <script>
+      function createStars(count = 100) {
+        for (let i = 0; i < count; i++) {
+          let star = document.createElement("div");
+          star.classList.add("star");
+          let size = Math.random() * 3 + "px";
+          star.style.width = size;
+          star.style.height = size;
+          star.style.top = Math.random() * window.innerHeight + "px";
+          star.style.left = Math.random() * window.innerWidth + "px";
+          star.style.animationDuration = Math.random() * 3 + 2 + "s";
+          document.body.appendChild(star);
+        }
+      }
+
+      document.getElementById("startBtn").addEventListener("click", function () {
+        let heart = document.getElementById("heart");
+        let button = document.getElementById("startBtn");
+        let loveText = document.getElementById("loveText");
+
+        // đổi nền thành bầu trời sao
+        document.body.classList.add("starry");
+        createStars(150);
+
+        // hiện chữ và trái tim
+        heart.style.display = "block";
+        loveText.style.display = "block";
+
+        // ẩn nút
+        button.style.display = "none";
+      });
+    </script>
+  </body>
+</html>
