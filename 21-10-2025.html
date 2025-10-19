@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gửi Em 💌</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@400&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-image: url("https://i.pinimg.com/1200x/1c/6f/f6/1c6ff67c7f3e184b6e36c65d274fa20f.jpg");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+      }
+
+      /* === PHONG THƯ === */
+      .wrapper {
+        height: 200px;
+        width: 300px;
+        background-color: #f48fb1;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.5s ease, opacity 1s ease;
+        z-index: 2;
+      }
+
+      .lid {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        border-right: 150px solid transparent;
+        border-bottom: 100px solid transparent;
+        border-left: 150px solid transparent;
+        transform-origin: top;
+        transition: transform 0.25s linear;
+      }
+
+      .lid.one {
+        border-top: 100px solid #f8b5c6;
+        z-index: 3;
+        transform: rotateX(0deg);
+        transition-delay: 0.75s;
+      }
+
+      .lid.two {
+        border-top: 100px solid #f48fb1;
+        z-index: 1;
+        transform: rotateX(90deg);
+        transition-delay: 0.5s;
+      }
+
+      .envelope {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        border-top: 100px solid transparent;
+        border-right: 150px solid #f8b5c6;
+        border-bottom: 100px solid #f8b5c6;
+        border-left: 150px solid #f6a6b6;
+        z-index: 3;
+        transition: border-color 0.5s ease;
+      }
+
+      .letter-mini {
+        position: absolute;
+        top: 0;
+        width: 80%;
+        height: 80%;
+        background-color: #ffe4ec;
+        border-radius: 15px;
+        z-index: 2;
+        transition: 0.5s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        color: #d64b73;
+        font-weight: bold;
+      }
+
+      .wrapper.open .lid.one {
+        transform: rotateX(90deg);
+        transition-delay: 0s;
+      }
+
+      .wrapper.open .lid.two {
+        transform: rotateX(180deg);
+        transition-delay: 0.25s;
+      }
+
+      .wrapper.open .letter-mini {
+        transform: translateY(-50px);
+        transition-delay: 0.5s;
+      }
+
+      .wrapper.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* === LÁ THƯ TÌNH === */
+      .love-letter {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        z-index: 1;
+        transition: opacity 1s ease;
+        background-image: url("https://i.pinimg.com/1200x/1c/6f/f6/1c6ff67c7f3e184b6e36c65d274fa20f.jpg");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+      }
+
+      .love-letter.show {
+        opacity: 1;
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(4px);
+        z-index: 0;
+      }
+
+      .letter {
+        position: relative;
+        background: #ffe4ec;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 20px 24px;
+        width: 90%;
+        max-width: 420px;
+        z-index: 1;
+        animation: fadeIn 1.5s ease;
+      }
+
+      .header {
+        text-align: center;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.8rem;
+        color: #d64b73;
+        margin-bottom: 16px;
+      }
+
+      .content {
+        font-size: 1rem;
+        line-height: 1.7;
+        text-align: justify;
+        white-space: pre-wrap;
+        min-height: 220px;
+        color: #5c303c;
+      }
+
+      .signature {
+        text-align: right;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.3rem;
+        color: #d64b73;
+        margin-top: 20px;
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      .heart {
+        position: absolute;
+        color: #ff6f91;
+        font-size: 18px;
+        animation: floatUp 5s linear forwards;
+        z-index: 2;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh);
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Phong thư -->
+    <div class="wrapper" id="wrapper">
+      <div class="lid one"></div>
+      <div class="lid two"></div>
+      <div class="envelope"></div>
+      <div class="letter-mini"></div>
+    </div>
+
+    <!-- Lá thư tình -->
+    <div class="love-letter" id="loveLetter">
+      <div class="overlay"></div>
+      <div class="letter">
+        <div class="header">Gửi em – cô gái của anh 💕</div>
+        <div class="content" id="message"></div>
+        <div class="signature" id="signature">– Anh yêu em 💖</div>
+      </div>
+    </div>
+
+    <script>
+      const wrapper = document.getElementById("wrapper");
+      const loveLetter = document.getElementById("loveLetter");
+      const msgEl = document.getElementById("message");
+      const signEl = document.getElementById("signature");
+
+      const lines = [
+        "Hôm nay là 20/10 – ngày của những cô gái xinh đẹp, và em là người đặc biệt nhất trong số đó 🌷",
+        "Anh muốn gửi đến em những lời chúc chân thành nhất, không chỉ hôm nay mà là mỗi ngày trong năm.",
+        "Cảm ơn em vì đã ở bên anh, vì những nụ cười, sự dịu dàng và cả những quan tâm nhỏ bé khiến anh hạnh phúc.",
+        "Dù thời gian trôi qua thế nào, anh vẫn muốn người nắm tay em đến cuối con đường ❤️",
+        "Chúc em 20/10 thật ngọt ngào, luôn xinh đẹp và hạnh phúc.",
+      ];
+
+      let lineIndex = 0,
+        charIndex = 0;
+
+      function typeEffect() {
+        if (lineIndex < lines.length) {
+          const line = lines[lineIndex];
+          if (charIndex < line.length) {
+            msgEl.innerHTML += line.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeEffect, 40);
+          } else {
+            msgEl.innerHTML += "\n\n";
+            charIndex = 0;
+            lineIndex++;
+            setTimeout(typeEffect, 400);
+          }
+        } else {
+          signEl.style.opacity = 1;
+          startHearts();
+        }
+      }
+
+      function startHearts() {
+        setInterval(() => {
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+          heart.innerHTML = "❤";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.fontSize = Math.random() * 20 + 15 + "px";
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 5000);
+        }, 400);
+      }
+
+      wrapper.addEventListener("click", () => {
+        wrapper.classList.add("open");
+        setTimeout(() => wrapper.classList.add("fade-out"), 1500);
+        setTimeout(() => {
+          loveLetter.classList.add("show");
+          typeEffect();
+        }, 2200);
+      });
+    </script>
+  </body>
+</html>
