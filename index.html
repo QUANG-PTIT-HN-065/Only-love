@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lavishly+Yours&display=swap"
+      rel="stylesheet"
+    />
+    <title>💗</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: url("./Pink and White Minimalist July Calendar Desktop Wallpaper (2).png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        padding: 40px 20px;
+        overflow-x: hidden;
+        transition: filter 0.3s;
+      }
+
+      #rotateNotice {
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 182, 193, 0.95);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        z-index: 9999;
+      }
+
+      #rotateNotice .emoji {
+        font-size: 60px;
+        margin-bottom: 20px;
+        animation: bounce 1.5s infinite;
+      }
+
+      @keyframes bounce {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .card {
+        background: white;
+        border-radius: 30px;
+        padding: 25px;
+        box-shadow: 0 10px 25px rgba(255, 182, 193, 0.3);
+        color: #ff69b4;
+      }
+
+      .music-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 25px;
+        margin: 20px 0;
+      }
+
+      .music-btn {
+        background: none;
+        border: none;
+        color: #ff69b4;
+        font-size: 26px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      .music-btn:hover {
+        transform: scale(1.2);
+      }
+
+      .play-btn {
+        background: #ffb6c1;
+        border-radius: 50%;
+        width: 65px;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 28px;
+        transition: background 0.3s;
+      }
+      .play-btn:hover {
+        background: #ff69b4;
+      }
+
+      .progress-bar {
+        height: 5px;
+        background: #ffe4e1;
+        border-radius: 10px;
+        cursor: pointer;
+        overflow: hidden;
+      }
+      .progress-fill {
+        background: #ffb6c1;
+        height: 100%;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      .text {
+        font-size: 25px;
+        line-height: 1.6;
+        color: #ff69b4;
+        white-space: pre-wrap;
+        min-height: 120px;
+        font-family: "Dancing Script";
+        position: relative;
+      }
+
+      #countdown {
+        text-align: center;
+        font-size: 30px;
+        color: #ff69b4;
+        font-weight: bold;
+        margin-bottom: 15px;
+        font-family: "Dancing Script";
+      }
+
+      .right {
+        text-align: right;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="rotateNotice" style="display: none">
+      <div class="emoji">📱</div>
+      <div>Công chúa xin vui lòng xoay màn hình ngang</div>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px; height: 250px">
+      <div id="countdown">3</div>
+      <p class="text"></p>
+    </div>
+
+    <div class="card">
+      <h2 style="text-align: center">💗</h2>
+      <p style="text-align: center">"Enchanted" - Taylor Swift</p>
+
+      <div class="music-controls">
+        <button class="music-btn" title="Previous">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="19 20 9 12 19 4 19 20"></polygon>
+            <line x1="5" y1="19" x2="5" y2="5"></line>
+          </svg>
+        </button>
+        <button class="music-btn play-btn" id="playBtn"><span id="playIcon">▶</span></button>
+        <button class="music-btn" title="Next">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 4 15 12 5 20 5 4"></polygon>
+            <line x1="19" y1="5" x2="19" y2="19"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div style="text-align: center; font-size: 13px; margin-top: 8px">
+        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+      </div>
+
+      <audio id="audioPlayer" preload="auto" muted>
+        <source src="./love.mp3" type="audio/mp3" />
+      </audio>
+    </div>
+
+    <script>
+      const audio = document.getElementById("audioPlayer");
+      const playBtn = document.getElementById("playBtn");
+      const playIcon = document.getElementById("playIcon");
+      const progressBar = document.getElementById("progressBar");
+      const progressFill = document.getElementById("progressFill");
+      const currentTimeEl = document.getElementById("currentTime");
+      const durationEl = document.getElementById("duration");
+      const rotateNotice = document.getElementById("rotateNotice");
+
+      let isPlaying = false;
+
+      const textElement = document.querySelector(".text");
+      const countdownEl = document.getElementById("countdown");
+      const message = `Tớ không biết phải nói sao để có thể diễn tả lòng mình, chỉ biết là khi ở bên cậu, tớ thấy mình bình yên và hạnh phúc.\nTớ hy vọng chúng mình sẽ bên cạnh nhau đến khi trái tim này ngừng đập.`;
+      const loveMessage = "Tớ yêu cậu 🌷";
+      let index = 0;
+
+      function typeText() {
+        if (index < message.length) {
+          textElement.textContent += message.charAt(index);
+          index++;
+          setTimeout(typeText, 80);
+        } else {
+          // Hiện dòng "Tớ yêu cậu" ở bên phải sau khi gõ xong
+          const loveLine = document.createElement("p");
+          loveLine.textContent = loveMessage;
+          loveLine.classList.add("right");
+          textElement.appendChild(loveLine);
+        }
+      }
+
+      // Đếm ngược 3 giây
+      function startCountdown() {
+        let timeLeft = 3;
+        countdownEl.textContent = timeLeft;
+        const timer = setInterval(() => {
+          timeLeft--;
+          countdownEl.textContent = timeLeft;
+          if (timeLeft === 0) {
+            clearInterval(timer);
+            countdownEl.style.display = "none";
+            typeText();
+          }
+        }, 1000);
+      }
+
+      window.addEventListener("load", startCountdown);
+
+      // Xử lý xoay màn hình
+      function checkOrientation() {
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+        if (isMobile && isPortrait) {
+          rotateNotice.style.display = "flex";
+          audio.pause();
+          isPlaying = false;
+          playIcon.textContent = "▶";
+        } else {
+          rotateNotice.style.display = "none";
+          audio.muted = false;
+          audio.play().then(() => {
+            audio.currentTime = 10;
+            playIcon.textContent = "❚❚";
+            isPlaying = true;
+          }).catch(() => {});
+        }
+      }
+
+      window.addEventListener("load", checkOrientation);
+      window.addEventListener("orientationchange", checkOrientation);
+
+      // Điều khiển nhạc
+      playBtn.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+          playIcon.textContent = "▶";
+        } else {
+          audio.play();
+          playIcon.textContent = "❚❚";
+        }
+        isPlaying = !isPlaying;
+      });
+
+      audio.addEventListener("timeupdate", () => {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressFill.style.width = progress + "%";
+        const m = Math.floor(audio.currentTime / 60);
+        const s = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
+        currentTimeEl.textContent = `${m}:${s}`;
+      });
+
+      audio.addEventListener("loadedmetadata", () => {
+        const m = Math.floor(audio.duration / 60);
+        const s = Math.floor(audio.duration % 60).toString().padStart(2, "0");
+        durationEl.textContent = `${m}:${s}`;
+      });
+
+      progressBar.addEventListener("click", (e) => {
+        const width = e.currentTarget.offsetWidth;
+        const clickX = e.offsetX;
+        audio.currentTime = (clickX / width) * audio.duration;
+      });
+    </script>
+  </body>
+</html>
